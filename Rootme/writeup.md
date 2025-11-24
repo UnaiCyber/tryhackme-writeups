@@ -37,6 +37,7 @@ Para enumerar directorios en el servidor web se utilizó la herramienta **Gobust
 
 gobuster dir -u http:/"IP" -w /usr/share/wordlists/dirb/common.txt
 
+<img width="868" height="489" alt="image" src="https://github.com/user-attachments/assets/184775a8-ea91-4e18-b243-6ab6ee8beab7" />
 
 
 
@@ -44,7 +45,7 @@ gobuster dir -u http:/"IP" -w /usr/share/wordlists/dirb/common.txt
   `/panel/`
 
 
-  ## 🌐 Web
+## 🌐 Web
 
 Al acceder al directorio `/panel/`, se presenta una interfaz de subida de archivos. Este tipo de funcionalidad puede ser vulnerable si no se aplican correctamente los filtros de tipo de archivo y ejecución en el servidor.
 
@@ -53,6 +54,7 @@ Al acceder al directorio `/panel/`, se presenta una interfaz de subida de archiv
 El objetivo en este punto es ejecutar una **reverse shell** que nos permita obtener acceso remoto a la máquina. Para ello, se utiliza el script PHP de **Pentestmonkey**, ampliamente conocido en entornos de pentesting.
 
 Antes de subirlo, se modifican los parámetros para que la shell se conecte a nuestra máquina atacante, donde estaremos escuchando con `netcat`.
+
 <img width="463" height="212" alt="image" src="https://github.com/user-attachments/assets/d0bb15e2-955f-4505-bd24-bda5c72962a1" />
 
 ---
@@ -95,6 +97,7 @@ Una vez obtenida la shell como el usuario `www-data`, lo primero que hacemos es 
 ---
 
 Accedemos al directorio `/var/www` y encontramos el archivo `user.txt`, que contiene la primera flag del laboratorio. Esta flag confirma que hemos comprometido el entorno web con éxito.
+
 <img width="645" height="202" alt="image" src="https://github.com/user-attachments/assets/5274e855-7f5f-4412-9f1d-4b356b8f6514" />
 
 ---
@@ -110,6 +113,7 @@ En este caso, optamos por buscar binarios con el bit **SUID** activado, ya que p
 ## 🏁 root.txt — Escalada con GTFOBins
 
 Ejecutamos el siguiente comando para listar todos los archivos con permisos SUID en el sistema:
+
 <img width="991" height="792" alt="image" src="https://github.com/user-attachments/assets/a5c10008-f071-4cf0-945e-25ff5982438b" />
 
 
@@ -124,5 +128,16 @@ GTFOBins es una base de datos que recopila técnicas de explotación para binari
 
 En este caso, el binario vulnerable permite ejecutar código arbitrario con privilegios elevados. Siguiendo la técnica documentada en GTFOBins, ejecutamos el binario con una instrucción que invoca una shell persistente:
 
+<img width="593" height="172" alt="image" src="https://github.com/user-attachments/assets/2670950c-5a9c-49e4-8640-056ac92fdee6" />
+
+Confirmamos el acceso con `whoami`, que devuelve `root`, lo que valida que hemos obtenido **sesión como administrador del sistema**.
+
+---
+
+Desde esta shell, accedemos al directorio `/root` y leemos el archivo `root.txt`, que contiene la **flag final del laboratorio**.
+
+---
+
+Con esto, se completa satisfactoriamente la explotación de la máquina.
 
 
